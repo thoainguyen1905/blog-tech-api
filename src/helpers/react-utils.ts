@@ -23,3 +23,13 @@ export const switchReactObj = (obj: any, type: string, userAction: any) => {
     };
   }
 };
+
+export const generateProductCode = () => {
+  const randomFourDigits = Math.floor(1000 + Math.random() * 9000);
+
+  const randomThreeDigits = Math.floor(100 + Math.random() * 900);
+
+  const productCode = `TK${randomFourDigits}-${randomThreeDigits}`;
+
+  return productCode;
+};

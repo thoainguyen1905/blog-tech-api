@@ -40,7 +40,7 @@ export const getListComment = async (req: Request, res: Response) => {
       .populate("reaction", "-listUserAction");
     for (let i = 0; i < paginatedComment.length; i++) {
       const reaction = await ReactModel.findOne({
-        commentId: paginatedComment[i].id,
+        idTarget: paginatedComment[i].id,
       });
       if (reaction !== null) {
         const { listUserAction } = reaction;

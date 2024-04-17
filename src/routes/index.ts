@@ -7,6 +7,7 @@ import commentRouter from "./comment.router";
 import reactRouter from "./react.router";
 import uploadRouter from "./upload.router";
 import crawlerRouter from "./crawler.router";
+import productRouter from "./product.router";
 
 const api = routes
   .use(blogRouter)
@@ -15,6 +16,7 @@ const api = routes
   .use(commentRouter)
   .use(reactRouter)
   .use(uploadRouter)
-  .use(crawlerRouter);
+  .use(crawlerRouter)
+  .use(productRouter);
 
 export default routes.use("/api", api);

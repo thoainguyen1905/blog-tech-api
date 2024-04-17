@@ -7,22 +7,27 @@ import CommentModel from "../../models/comment.model";
 export const addReact = async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    const { type, target, blogId, commentId } = data;
-    if (blogId) {
-      const blogReact: any = await ReactModel.findOne({
-        blogId: blogId,
+    const { type, target, idTarget } = data;
+    if (target !== "blog" && target !== "comment" && target !== "product") {
+      return res.status(404).json({
+        message: "target not found",
+        status: 404,
       });
-      if (blogReact) {
+    } else {
+      const react = await ReactModel.findOne({
+        idTarget: idTarget,
+      });
+      if (react) {
         if (type === "like" || type === "haha" || type === "love") {
-          const checkUser = blogReact.listUserAction.some(
+          const checkUser = react.listUserAction.some(
             (item) => item.email === req.user.email
           );
           if (!checkUser) {
             let newReact = {
-              ...blogReact.toObject(),
-              [type]: blogReact[type] ? blogReact[type] + 1 : 1,
+              ...react.toObject(),
+              [type]: react[type] ? react[type] + 1 : 1,
               listUserAction: [
-                ...blogReact.listUserAction,
+                ...react.listUserAction,
                 {
                   ...req.user,
                   react: type,
@@ -31,28 +36,24 @@ export const addReact = async (req: Request, res: Response) => {
             };
             let doc = await ReactModel.findOneAndUpdate(
               {
-                blogId: blogReact.blogId,
+                idTarget: react.idTarget,
               },
               newReact,
               { new: true, upsert: true }
-            );
+            ).select("-listUserAction");
             return res.json(doc);
           } else {
-            const userAction = blogReact.listUserAction.filter(
+            const userAction = react.listUserAction.filter(
               (item) => item.email === req.user.email
             );
-            const newReactCheck = switchReactObj(
-              blogReact,
-              type,
-              userAction[0]
-            );
+            const newReactCheck = switchReactObj(react, type, userAction[0]);
             let doc = await ReactModel.findOneAndUpdate(
               {
-                blogId: blogReact.blogId,
+                idTarget: react.idTarget,
               },
               newReactCheck,
               { new: true, upsert: true }
-            );
+            ).select("-listUserAction");
             return res.json(doc);
           }
         } else {
@@ -64,8 +65,8 @@ export const addReact = async (req: Request, res: Response) => {
       } else {
         const newReact = new ReactModel({
           [type]: 1,
-          blogId: blogId,
-          commentId: commentId,
+          idTarget: idTarget,
+          target: target,
           listUserAction: [
             {
               ...req.user,
@@ -74,87 +75,35 @@ export const addReact = async (req: Request, res: Response) => {
           ],
         });
         await newReact.save();
-      }
-    } else if (commentId) {
-      const blogReact: any = await ReactModel.findOne({
-        commentId: commentId,
-      });
-      if (blogReact) {
-        if (type === "like" || type === "haha" || type === "love") {
-          const checkUser = blogReact.listUserAction.some(
-            (item) => item.email === req.user.email
-          );
-          if (!checkUser) {
-            let newReact = {
-              ...blogReact.toObject(),
-              [type]: blogReact[type] ? blogReact[type] + 1 : 1,
-              listUserAction: [
-                ...blogReact.listUserAction,
-                {
-                  ...req.user,
-                  react: type,
-                },
-              ],
-            };
-            let doc = await ReactModel.findOneAndUpdate(
-              {
-                blogId: blogReact.blogId,
-              },
-              newReact,
-              { new: true, upsert: true }
-            );
-            return res.json(doc);
-          } else {
-            const userAction = blogReact.listUserAction.filter(
-              (item) => item.email === req.user.email
-            );
-            const newReactCheck = switchReactObj(
-              blogReact,
-              type,
-              userAction[0]
-            );
-            let doc = await ReactModel.findOneAndUpdate(
-              {
-                commentId: blogReact.commentId,
-              },
-              newReactCheck,
-              { new: true, upsert: true }
-            );
-            return res.json(doc);
-          }
-        } else {
-          return res.status(400).json({
-            message: "type is required",
-            status: 400,
-          });
-        }
-      } else {
-        const newReact = new ReactModel({
-          [type]: 1,
-          blogId: blogId,
-          commentId: commentId,
-          listUserAction: [
-            {
-              ...req.user,
-              react: type,
-            },
-          ],
+        return res.status(200).json({
+          message: "success",
+          status: 200,
         });
-        await CommentModel.findByIdAndUpdate(commentId, {
-          reaction: newReact._id.toString(),
-        });
-        await newReact.save();
       }
     }
-    return res.status(200).json({
-      message: "success",
-      status: 200,
-    });
   } catch (error) {
     return res.status(500).json(error);
   }
 };
 
-export const getReactBlog = async (req: Request, res: Response) => {};
+export const getReactBlog = async (req: Request, res: Response) => {
+  const page = req.query.page;
+  const size = req.query.size;
+  const startIndex = (page - 1) * size;
+  const total = await ReactModel.estimatedDocumentCount();
+  try {
+    const reacts = await ReactModel.find().skip(startIndex).limit(size);
+    return res.status(200).json({
+      message: "success",
+      status: 200,
+      currentPage: page,
+      total,
+      totalPages: Math.ceil(total / size),
+      data: reacts,
+    });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 export const deleteReact = async (req: Request, res: Response) => {};

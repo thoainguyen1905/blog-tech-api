@@ -7,16 +7,36 @@ export const getListBlog = async (req: Request, res: Response) => {
   const page = req.query.page;
   const size = req.query.size;
   const id = req.query.id;
+  const search = req.query.search;
   try {
     if (id) {
       const blog = await BlogModel.findOne({
         _id: id,
       });
       const reacts = await ReactModel.findOne({
-        blogId: id,
+        idTarget: id,
       }).select("-listUserAction");
       const mergeBlog = Object.assign({}, reacts.toObject(), blog.toObject());
       return res.status(200).json(mergeBlog);
+    } else if (search) {
+      const regex = new RegExp(search, "i");
+      const startIndex = (page - 1) * size;
+      const total = await BlogModel.find({
+        title: regex,
+      }).countDocuments();
+      const blog = await BlogModel.find({
+        title: regex,
+      })
+        .skip(startIndex)
+        .limit(size);
+      return res.status(200).json({
+        message: "success",
+        status: 200,
+        currentPage: page,
+        total,
+        totalPages: Math.ceil(total / size),
+        data: blog,
+      });
     } else {
       const total = await BlogModel.estimatedDocumentCount();
 
@@ -27,6 +47,8 @@ export const getListBlog = async (req: Request, res: Response) => {
         .skip(startIndex)
         .limit(size);
       return res.status(200).json({
+        message: "success",
+        status: 200,
         currentPage: page,
         total,
         totalPages: Math.ceil(total / size),

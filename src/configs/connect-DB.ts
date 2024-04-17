@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 import "dotenv/config";
+require("dotenv").config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env.production"
+      : ".env.development",
+});
 const connectDB = async () => {
   const dbURI =
     "mongodb+srv://thoaikun1905:thoaikun1905@cluster0.ohsmtrq.mongodb.net/";
