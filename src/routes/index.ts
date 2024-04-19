@@ -8,6 +8,9 @@ import reactRouter from "./react.router";
 import uploadRouter from "./upload.router";
 import crawlerRouter from "./crawler.router";
 import productRouter from "./product.router";
+import transportRouter from "./transport.router";
+import shippingRouter from "./shipping.router";
+import staffRouter from "./staff.router";
 
 const api = routes
   .use(blogRouter)
@@ -17,6 +20,9 @@ const api = routes
   .use(reactRouter)
   .use(uploadRouter)
   .use(crawlerRouter)
-  .use(productRouter);
+  .use(productRouter)
+  .use(transportRouter)
+  .use(shippingRouter)
+  .use(staffRouter);
 
 export default routes.use("/api", api);

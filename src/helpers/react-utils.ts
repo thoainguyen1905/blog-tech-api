@@ -33,3 +33,9 @@ export const generateProductCode = () => {
 
   return productCode;
 };
+
+export const generateCodeTransport = () => {
+  const min = 1000000; // 10^6
+  const max = 9999999; // 10^7 - 1
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
