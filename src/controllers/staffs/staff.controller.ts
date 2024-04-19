@@ -75,3 +75,12 @@ export const signUp = async (req: Request, res: Response) => {
     return res.status(500).json(error);
   }
 };
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
