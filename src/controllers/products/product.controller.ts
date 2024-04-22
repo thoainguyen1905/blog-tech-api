@@ -14,17 +14,24 @@ export const getListProduct = async (req: Request, res: Response) => {
         idTarget: id,
       }).select("-listUserAction");
       const product = await ProductModel.findById(id);
-      const mergeBlog = Object.assign(
-        {},
-        {
-          reaction: reacts.toObject(),
-        },
-        product.toObject()
-      );
+      if (reacts) {
+        const mergeBlog = Object.assign(
+          {},
+          {
+            reaction: reacts.toObject(),
+          },
+          product.toObject()
+        );
+        return res.status(200).json({
+          message: "success",
+          status: 200,
+          data: mergeBlog,
+        });
+      }
       return res.status(200).json({
         message: "success",
         status: 200,
-        data: mergeBlog,
+        data: product,
       });
     }
     const products = await ProductModel.find()
