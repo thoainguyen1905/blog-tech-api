@@ -39,7 +39,7 @@ export const addReact = async (req: Request, res: Response) => {
                 idTarget: react.idTarget,
               },
               newReact,
-              { new: true, upsert: true }
+              { new: true }
             ).select("-listUserAction");
             return res.json(doc);
           } else {

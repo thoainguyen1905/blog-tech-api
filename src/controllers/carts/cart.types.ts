@@ -13,9 +13,9 @@ export const cartValidation = (cart: ICart) => {
   return Joi.object({
     name: Joi.string().max(200).required(),
     thumbnail: Joi.string().required(),
-    sizes: Joi.string().required(),
+    size: Joi.string().required(),
     quantity: Joi.number().required(),
     price: Joi.number().required(),
-    userId: Joi.string().required(),
+    productId: Joi.string().required(),
   }).validate(cart);
 };

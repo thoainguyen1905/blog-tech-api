@@ -11,7 +11,33 @@ export const addCart = async (req: Request, res: Response) => {
         status: 400,
       });
     } else {
-      const data = new CartModel(req.body);
+      const checkCart = await CartModel.findOne({
+        productId: req.body.productId,
+      });
+      if (checkCart) {
+        const duplicateCart = await CartModel.findOneAndUpdate(
+          {
+            productId: req.body.productId,
+          },
+          {
+            quantity: checkCart.toObject().quantity + req.body.quantity,
+            totalPrice:
+              (checkCart.toObject().quantity + req.body.quantity) *
+              req.body.price,
+          },
+          { new: true }
+        );
+        return res.status(200).json({
+          message: "success",
+          status: 200,
+          data: duplicateCart,
+        });
+      }
+      const data = new CartModel({
+        ...req.body,
+        userId: req.user.id,
+        totalPrice: req.body.price * req.body.quantity,
+      });
       await data.save();
       return res.status(200).json({
         message: "success",
@@ -28,13 +54,16 @@ export const getlistCart = async (req: Request, res: Response) => {
   const { page, size } = req.query;
   const user = req.user;
   const startIndex = (page - 1) * size;
-  const total = await CartModel.findOne({
+  const total = await CartModel.find({
     userId: user.id,
   }).countDocuments();
   try {
-    const carts = await CartModel.findOne({
-      userId: user.id,
-    })
+    const carts = await CartModel.find(
+      {
+        userId: user.id,
+      },
+      { userId: 0 }
+    )
       .skip(startIndex)
       .limit(size);
     return res.status(200).json({
@@ -51,7 +80,7 @@ export const getlistCart = async (req: Request, res: Response) => {
 };
 
 export const deleteCart = async (req: Request, res: Response) => {
-  const { id } = req.query.id;
+  const id = req.query.id;
   const user = req.user;
   try {
     if (!id) {

@@ -14,6 +14,7 @@ import staffRouter from "./staff.router";
 import bannerRouter from "./banner.router";
 import orderRouter from "./order.router";
 import cartRouter from "./cart.router";
+import addressRouter from "./address.router";
 
 const api = routes
   .use(blogRouter)
@@ -29,6 +30,7 @@ const api = routes
   .use(transportRouter)
   .use(shippingRouter)
   .use(orderRouter)
+  .use(addressRouter)
   .use(staffRouter);
 
 export default routes.use("/api", api);

@@ -1,6 +1,9 @@
 import routes from "../src/routes";
 import * as bodyParser from "body-parser";
 import cors from "cors";
+import convertDistrict, {
+  convertDatatoObjEn,
+} from "../src/configs/convert-district";
 import "dotenv/config";
 require("dotenv").config({
   path:
@@ -31,6 +34,12 @@ connectDB();
 // crawlerWeb();
 
 // connectSocket();
+// convertDistrict("province.xls", "province.json");
+// convertDistrict("district.xls", "district.json");
+// convertDistrict("tower.xls", "tower.json");
+
+// convertDatatoObjEn("tower.json");
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
