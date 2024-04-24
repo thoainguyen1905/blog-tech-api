@@ -4,4 +4,6 @@ export interface ICommentBody {
   userInfo?: string | IAuthUser;
   createTime?: Date | string;
   blogId?: string;
+  targetId?: string;
+  target?: string;
 }

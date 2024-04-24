@@ -8,7 +8,8 @@ export const addComment = async (req: Request, res: Response) => {
     const user = await req.user;
     const data: ICommentBody = await req.body;
     const newComment = new CommentModel({
-      blogId: data.blogId,
+      targetId: data.targetId,
+      target: data.target,
       text: data.text,
       userInfo: user.id,
     });
@@ -32,7 +33,7 @@ export const getListComment = async (req: Request, res: Response) => {
     const startIndex = (page - 1) * size;
     const endIndex = Math.min(startIndex + size, total);
     const paginatedComment: any = await CommentModel.find({
-      blogId: id,
+      targetId: id,
     })
       .skip(startIndex)
       .limit(size)
@@ -51,6 +52,9 @@ export const getListComment = async (req: Request, res: Response) => {
           paginatedComment[i] = {
             ...paginatedComment[i].toObject(),
             isLike: true,
+            like: reaction.like ?? 0,
+            haha: reaction.haha ?? 0,
+            love: reaction.love ?? 0,
           };
         }
       }

@@ -11,7 +11,9 @@ const CommentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  blogId: { type: String, required: true },
+  targetId: { type: String, required: true },
+  target: { type: String, required: true },
+  // blogId: { type: String, required: true },
   likes: { type: Number },
   reaction: {
     type: Schema.Types.ObjectId,
