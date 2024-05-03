@@ -117,14 +117,29 @@ export const deleteUser = async (req: Request, res: Response) => {};
 
 export const getDetailsUser = async (req: Request, res: Response) => {
   try {
-    const id = req.query.id;
-    const user = await UserModel.findOne({
-      _id: id,
-    }).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "Không tìm thấy người dùng" });
+    const { sort, size, page, id } = req.query;
+    const startIndex = (page - 1) * size;
+    const total = await UserModel.estimatedDocumentCount();
+    if (id) {
+      const user = await UserModel.findOne({
+        _id: id,
+      }).select("-password");
+      if (!user) {
+        return res.status(404).json({ message: "Không tìm thấy người dùng" });
+      }
     }
-    return res.status(200).json(user);
+    const users = await UserModel.find()
+      .skip(startIndex)
+      .limit(size)
+      .select("-password");
+    return res.status(200).json({
+      message: "success",
+      status: 200,
+      data: users,
+      currentPage: page,
+      total,
+      totalPages: Math.ceil(total / size),
+    });
   } catch (error) {
     return res.status(500).json(error);
   }
