@@ -1,10 +1,15 @@
 import routes from "../src/routes";
 import * as bodyParser from "body-parser";
 import cors from "cors";
-import convertDistrict, {
-  convertDatatoObjEn,
-} from "../src/configs/convert-district";
+import admin from "firebase-admin";
 import "dotenv/config";
+var serviceAccount = require(process.cwd() + "/service-key.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const certPath = admin.credential.cert(serviceAccount);
 require("dotenv").config({
   path:
     process.env.NODE_ENV === "production"

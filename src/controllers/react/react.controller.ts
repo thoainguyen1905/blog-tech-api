@@ -3,8 +3,9 @@ import ReactModel from "../../models/react.model";
 import { ITargetType, ITypesReact } from "./react.types";
 import { switchReactObj } from "../../helpers/react-utils";
 import CommentModel from "../../models/comment.model";
+import { RequestApp } from "../../types/constants";
 
-export const addReact = async (req: Request, res: Response) => {
+export const addReact = async (req: RequestApp, res: Response) => {
   try {
     const data = req.body;
     const { type, target, idTarget } = data;
@@ -86,7 +87,7 @@ export const addReact = async (req: Request, res: Response) => {
   }
 };
 
-export const getReactBlog = async (req: Request, res: Response) => {
+export const getReactBlog = async (req: RequestApp, res: Response) => {
   const page = req.query.page;
   const size = req.query.size;
   const startIndex = (page - 1) * size;

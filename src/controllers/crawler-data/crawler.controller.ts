@@ -4,8 +4,9 @@ import cheerio from "cheerio";
 import { Request, Response } from "express";
 import BlogModel from "../../models/blog.model";
 import crawlerWeb from "../../helpers/crawler";
+import { RequestApp } from "../../types/constants";
 
-export const crawlerBlog = async (req: Request, res: Response) => {
+export const crawlerBlog = async (req: RequestApp, res: Response) => {
   try {
     const page = req.query.page;
     const data = await crawlerWeb(page);

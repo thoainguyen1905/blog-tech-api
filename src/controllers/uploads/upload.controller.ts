@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
+import { RequestApp } from "../../types/constants";
 
-export const uploadImg = async (req: Request, res: Response) => {
+export const uploadImg = async (req: RequestApp, res: Response) => {
   try {
     const file = req.file;
     if (!file) {

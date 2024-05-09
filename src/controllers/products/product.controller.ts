@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 import { generateProductCode } from "../../helpers/react-utils";
 import { productValidation } from "./product.types";
 import ReactModel from "../../models/react.model";
+import { RequestApp } from "../../types/constants";
 
-export const getListProduct = async (req: Request, res: Response) => {
+export const getListProduct = async (req: RequestApp, res: Response) => {
   const { sort, size, page, id } = req.query;
   const startIndex = (page - 1) * size;
   const total = await ProductModel.estimatedDocumentCount();
@@ -78,7 +79,7 @@ export const addProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getDetail = async (req: Request, res: Response) => {
+export const getDetail = async (req: RequestApp, res: Response) => {
   const id = req.query.id;
   try {
     if (id) {

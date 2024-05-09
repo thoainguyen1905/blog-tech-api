@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { cartValidation } from "./cart.types";
 import CartModel from "../../models/cart.model";
+import { RequestApp } from "../../types/constants";
 
-export const addCart = async (req: Request, res: Response) => {
+export const addCart = async (req: RequestApp, res: Response) => {
   try {
     const validation = cartValidation(req.body);
     if (validation.error) {
@@ -50,7 +51,7 @@ export const addCart = async (req: Request, res: Response) => {
   }
 };
 
-export const getlistCart = async (req: Request, res: Response) => {
+export const getlistCart = async (req: RequestApp, res: Response) => {
   const { page, size } = req.query;
   const user = req.user;
   const startIndex = (page - 1) * size;
@@ -79,7 +80,7 @@ export const getlistCart = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteCart = async (req: Request, res: Response) => {
+export const deleteCart = async (req: RequestApp, res: Response) => {
   const id = req.query.id;
   const user = req.user;
   try {

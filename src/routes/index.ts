@@ -16,6 +16,7 @@ import orderRouter from "./order.router";
 import cartRouter from "./cart.router";
 import addressRouter from "./address.router";
 import categoriesRouter from "./categories.router";
+import notificationRouter from "./notification.router";
 
 const api = routes
   .use(blogRouter)
@@ -33,6 +34,7 @@ const api = routes
   .use(orderRouter)
   .use(addressRouter)
   .use(staffRouter)
-  .use(categoriesRouter);
+  .use(categoriesRouter)
+  .use(notificationRouter);
 
 export default routes.use("/api", api);

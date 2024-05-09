@@ -11,6 +11,7 @@ import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import UserModel from "../../models/user.model";
+import { RequestApp } from "../../types/constants";
 
 export const signIn = async (req: Request, res: Response) => {
   try {
@@ -87,7 +88,7 @@ export const signUp = async (req: Request, res: Response) => {
   }
 };
 
-export const getMe = async (req: Request, res: Response) => {
+export const getMe = async (req: RequestApp, res: Response) => {
   try {
     const user = await UserModel.findOne({ _id: req.user.id }).select(
       "-password"
@@ -98,7 +99,7 @@ export const getMe = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: RequestApp, res: Response) => {
   try {
     const data = req.body;
     const updateUser = await UserModel.findByIdAndUpdate(req.user.id, data, {
@@ -113,9 +114,9 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {};
+export const deleteUser = async (req: RequestApp, res: Response) => {};
 
-export const getDetailsUser = async (req: Request, res: Response) => {
+export const getDetailsUser = async (req: RequestApp, res: Response) => {
   try {
     const { sort, size, page, id } = req.query;
     const startIndex = (page - 1) * size;
@@ -145,7 +146,7 @@ export const getDetailsUser = async (req: Request, res: Response) => {
   }
 };
 
-export const changePassword = async (req: Request, res: Response) => {
+export const changePassword = async (req: RequestApp, res: Response) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const user: IAuthUser = await UserModel.findOne({

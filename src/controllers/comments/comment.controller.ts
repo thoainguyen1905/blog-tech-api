@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import CommentModel from "../../models/comment.model";
 import { ICommentBody } from "./comment.types";
 import ReactModel from "../../models/react.model";
+import { RequestApp } from "../../types/constants";
 
-export const addComment = async (req: Request, res: Response) => {
+export const addComment = async (req: RequestApp, res: Response) => {
   try {
     const user = await req.user;
     const data: ICommentBody = await req.body;
@@ -23,7 +24,7 @@ export const addComment = async (req: Request, res: Response) => {
   }
 };
 
-export const getListComment = async (req: Request, res: Response) => {
+export const getListComment = async (req: RequestApp, res: Response) => {
   try {
     const page = req.query.page;
     const size = req.query.size;
@@ -70,7 +71,7 @@ export const getListComment = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteComment = async (req: Request, res: Response) => {
+export const deleteComment = async (req: RequestApp, res: Response) => {
   try {
     const id = req.query.id;
     const user = await req.user;

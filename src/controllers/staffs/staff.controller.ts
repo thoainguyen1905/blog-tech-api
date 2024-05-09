@@ -3,6 +3,7 @@ import "dotenv/config";
 import StaffModel from "../../models/staff.model";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { RequestApp } from "../../types/constants";
 
 export const signIn = async (req: Request, res: Response) => {
   try {
@@ -76,7 +77,7 @@ export const signUp = async (req: Request, res: Response) => {
   }
 };
 
-export const getMe = async (req: Request, res: Response) => {
+export const getMe = async (req: RequestApp, res: Response) => {
   try {
     const user = req.user;
     return res.status(200).json(user);

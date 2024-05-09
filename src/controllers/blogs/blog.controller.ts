@@ -2,12 +2,25 @@ import { Request, Response } from "express";
 import BlogModel from "../../models/blog.model";
 import { IBlogBody } from "./blog.types";
 import ReactModel from "../../models/react.model";
+import { RequestApp } from "../../types/constants";
+import FirebaseModel from "../../models/firebase.model";
 
-export const getListBlog = async (req: Request, res: Response) => {
+export const getListBlog = async (req: RequestApp, res: Response) => {
   const page = req.query.page;
   const size = req.query.size;
   const id = req.query.id;
   const search = req.query.search;
+  if (req.header("Device-token") !== undefined) {
+    let checkToken = await FirebaseModel.findOne({
+      token: req.header("Device-token"),
+    });
+    if (!checkToken) {
+      const newtoken = new FirebaseModel({
+        token: req.header("Device-token"),
+      });
+      await newtoken.save();
+    }
+  }
   try {
     if (id) {
       const blog = await BlogModel.findOne({

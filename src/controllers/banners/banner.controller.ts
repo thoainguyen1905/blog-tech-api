@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import BannerModel from "../../models/banner.model";
 import { bannerValidation } from "./banner.types";
+import { RequestApp } from "../../types/constants";
 
 export const createBanner = async (req: Request, res: Response) => {
   const data = req.body;
@@ -25,7 +26,7 @@ export const createBanner = async (req: Request, res: Response) => {
   }
 };
 
-export const getBanners = async (req: Request, res: Response) => {
+export const getBanners = async (req: RequestApp, res: Response) => {
   const { size, page } = req.query;
   const startIndex = (page - 1) * size;
   const total = await BannerModel.estimatedDocumentCount();

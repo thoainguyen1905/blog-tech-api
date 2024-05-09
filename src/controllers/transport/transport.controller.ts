@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import { deliveryStaffValidation } from "./transport.types";
 import { generateCodeTransport } from "../../helpers/react-utils";
 import { ReceiveModal, DeliveryModal } from "../../models/transport.model";
+import { RequestApp } from "../../types/constants";
 
-export const createReceive = async (req: Request, res: Response) => {
+export const createReceive = async (req: RequestApp, res: Response) => {
   try {
     const user = req.user;
     const data = req.body;
@@ -31,7 +32,7 @@ export const createReceive = async (req: Request, res: Response) => {
   }
 };
 
-export const createDelivery = async (req: Request, res: Response) => {
+export const createDelivery = async (req: RequestApp, res: Response) => {
   try {
     const user = req.user;
     const data = req.body;
@@ -88,7 +89,7 @@ export const changeStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const getReceive = async (req: Request, res: Response) => {
+export const getReceive = async (req: RequestApp, res: Response) => {
   const { status } = req.query;
   try {
     const receives = await ReceiveModal.find({
@@ -105,7 +106,7 @@ export const getReceive = async (req: Request, res: Response) => {
   }
 };
 
-export const getDelivery = async (req: Request, res: Response) => {
+export const getDelivery = async (req: RequestApp, res: Response) => {
   const { status } = req.query;
   try {
     const deliveries = await DeliveryModal.find({
