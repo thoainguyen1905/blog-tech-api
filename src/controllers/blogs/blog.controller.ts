@@ -17,8 +17,14 @@ export const getListBlog = async (req: RequestApp, res: Response) => {
     if (!checkToken) {
       const newtoken = new FirebaseModel({
         token: req.header("Device-token"),
+        idUser: req.user.id,
       });
       await newtoken.save();
+    } else {
+      const updateToken = await FirebaseModel.findByIdAndUpdate(checkToken.id, {
+        ...checkToken,
+        idUser: req.user.id,
+      });
     }
   }
   try {

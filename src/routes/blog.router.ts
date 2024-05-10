@@ -5,9 +5,10 @@ import {
   addBlog,
   deleteBlog,
 } from "../controllers/blogs/blog.controller";
+import auth from "../middleware/auth";
 
 // blogRouter.get("/blog?id=:id", getDetailBlog);
-blogRouter.get("/blog", getListBlog);
+blogRouter.get("/blog", auth, getListBlog);
 blogRouter.post("/blog", addBlog);
 blogRouter.delete("/blog", deleteBlog);
 

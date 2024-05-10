@@ -248,3 +248,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
     return res.status(500).json(error);
   }
 };
+
+export const logoutUser = async (req: RequestApp, res: Response) => {
+  try {
+    const user = req.user;
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
