@@ -17,6 +17,7 @@ require("dotenv").config({
       : ".env.development",
 });
 import connectDB from "../src/configs/connect-DB";
+import swaggerDocs from "../src/configs/swagger";
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -47,4 +48,5 @@ connectDB();
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  swaggerDocs(app, PORT);
 });

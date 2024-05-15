@@ -54,4 +54,47 @@ userRouter.post("/forgot-password", forgotPassword);
 userRouter.post("/change-password", auth, changePassword);
 userRouter.get("/me", auth, getMe);
 
+/**
+ * @swagger
+ * /me:
+ *  get:
+ *     tags:
+ *     - User
+ *     description: Returns API operational status
+ *     responses:
+ *       200:
+ *         description: API is  running
+ */
+/**
+ * @swagger
+ * /sign-in:
+ *  post:
+ *     tags:
+ *     - User
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - email
+ *              - password
+ *            properties:
+ *              email:
+ *                type: string
+ *                default: thoainv@volio.vn
+ *              password:
+ *                type: string
+ *                default: thoai
+ *     description: Returns API operational status
+ *     responses:
+ *      200:
+ *        description: Modified
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ */
+
 export default userRouter;
