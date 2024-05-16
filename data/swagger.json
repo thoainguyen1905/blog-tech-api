@@ -1,0 +1,748 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Your API Documentation",
+    "version": "1.0.0",
+    "description": "API Documentation generated with Swagger"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/me": {
+      "get": {
+        "summary": "lấy thông tin user",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Current user"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "lấy danh sách hoặc thông tin user",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "page thứ mấy"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "số lượng user trên một page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/sign-in": {
+      "post": {
+        "summary": "đăng nhập",
+        "tags": ["Users"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/userLogin"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer <Add access token here or parse from cookie>",
+            "description": "Insert your access token",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current user"
+          }
+        }
+      }
+    },
+    "/sign-up": {
+      "post": {
+        "summary": "đăng ký tài khoản",
+        "tags": ["Users"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/userLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current user"
+          }
+        }
+      }
+    },
+    "/change-password": {
+      "post": {
+        "summary": "đổi mật khẩu",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/doPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "change password success"
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "summary": "quên mật khẩu",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "thoainv@volio.vn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok quên mật khẩu"
+          }
+        }
+      }
+    },
+    "/blog?page={page}&size={size}": {
+      "get": {
+        "summary": "lấy danh sách blog",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Blog ID"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "page thứ mấy"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "số lượng user trên một page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok quên mật khẩu"
+          }
+        }
+      }
+    },
+    "/blog": {
+      "post": {
+        "summary": "tạo mới blog",
+        "tags": ["Blogs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/blogDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok quên mật khẩu"
+          }
+        }
+      }
+    },
+    "/blog?id={id}": {
+      "delete": {
+        "summary": "xoá một blog",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Blog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok quên mật khẩu"
+          }
+        }
+      }
+    },
+    "/product?page={page}&size={size}": {
+      "get": {
+        "summary": "lấy danh sách product hoặc thông tin",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "product ID"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "page thứ mấy"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "số lượng user trên một page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sản phẩm"
+          }
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "summary": "tạo mới product",
+        "tags": ["Products"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/productDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "tạo sản phẩm"
+          }
+        }
+      },
+      "put": {
+        "summary": "thay đổi thông tin",
+        "tags": ["Products"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/productDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "thay đổi sản phẩm"
+          }
+        }
+      }
+    },
+    "/product/relate?id={id}": {
+      "get": {
+        "summary": "lấy danh sách sản phẩm liên quan",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lấy danh sách sản phẩm"
+          }
+        }
+      }
+    },
+    "/product/new": {
+      "get": {
+        "summary": "lấy danh sách sản phẩm mới",
+        "tags": ["Products"],
+        "responses": {
+          "200": {
+            "description": "lấy danh sách sản phẩm"
+          }
+        }
+      }
+    },
+    "/product?id={id}": {
+      "delete": {
+        "summary": "xoá một product",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "product ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "xoá product"
+          }
+        }
+      }
+    },
+    "/comment": {
+      "post": {
+        "summary": "tạo comment",
+        "tags": ["Comments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/commentDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "comment mới"
+          }
+        }
+      }
+    },
+    "/comment?id={id}": {
+      "get": {
+        "summary": "lấy danh sách comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "comment ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lấy danh sách comment"
+          }
+        }
+      },
+      "delete": {
+        "summary": "xoá comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "comment ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "xoá comment"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "summary": "tạo categories",
+        "tags": ["Categories"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/categoriesDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "categories mới"
+          }
+        }
+      },
+      "get": {
+        "summary": "lấy danh sách categories",
+        "tags": ["Categories"],
+        "responses": {
+          "200": {
+            "description": "lấy danh sách categories"
+          }
+        }
+      }
+    },
+    "/categories?id={id}": {
+      "delete": {
+        "summary": "xoá categories",
+        "tags": ["Categories"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "comment ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "categories "
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "summary": "lấy danh sách cart",
+        "tags": ["Carts"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "page thứ mấy"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "số lượng user trên một page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "cart "
+          }
+        }
+      },
+      "post": {
+        "summary": "tạo cart",
+        "tags": ["Carts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/cartDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "cart mới"
+          }
+        }
+      },
+      "delete": {
+        "summary": "xoá cart",
+        "tags": ["Carts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "cart "
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "userLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "thoainv@volio.vn"
+        },
+        "password": {
+          "type": "string",
+          "example": "thoai"
+        }
+      }
+    },
+    "doPassword": {
+      "type": "object",
+      "properties": {
+        "currentPassword": {
+          "type": "string",
+          "example": "string"
+        },
+        "newPassword": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    },
+    "cartDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "SKECHERS - Giày sneakers nam cổ thấp phối họa tiết Uno"
+        },
+        "size": {
+          "type": "string",
+          "example": "42"
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "https://product.hstatic.net/1000284478/product/wbk_183501_1_c15a915188b34550b04f89c907c7a13f_large.jpg"
+        },
+        "quantity": {
+          "type": "number",
+          "example": 2
+        },
+        "price": {
+          "type": "number",
+          "example": 2490000
+        },
+        "productId": {
+          "type": "string",
+          "example": "6627608b6ccd9eb339d8719d"
+        }
+      }
+    },
+    "blogDetail": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "string"
+        },
+        "description": {
+          "type": "string",
+          "example": "string"
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    },
+    "categoriesDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Onitsuka Tiger"
+        },
+        "description": {
+          "type": "string",
+          "example": "Onitsuka Tiger"
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": false
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "https://www.elleman.vn/app/uploads/2022/06/23/215311/Onitsuka-Tiger_elleman-2022.jpg"
+        }
+      }
+    },
+    "commentDetail": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "example": "string"
+        },
+        "targetId": {
+          "type": "string",
+          "example": "string"
+        },
+        "text": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    },
+    "productDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "PUMA - Giày đá bóng nam Future Play TT"
+        },
+        "description": {
+          "type": "string",
+          "example": "Được truyền cảm hứng từ phong cách chơi bóng của Neymar Jr, phiên bản mới FUTURE PLAY đã ra mắt để bạn có thể làm cho đối thủ phải điên đảo. Với một lớp phủ FUZIONFIT360 kết hợp cùng công nghệ PWRTAPE, đôi giày Future Play TT sẽ giúp bạn thực hiện những cú rẽ nhanh và thay đổi tốc độ một cách dễ dàng."
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "https://product.hstatic.net/1000284478/product/01_107381_1_ece573272e4e4cccbb8f26f106aa90e2_large.jpg"
+        },
+        "images": {
+          "type": "array",
+          "example": [
+            "https://product.hstatic.net/1000284478/product/01_107381_1_ece573272e4e4cccbb8f26f106aa90e2_large.jpg",
+            "https://product.hstatic.net/1000284478/product/01_107381_2_fbcac0c767e74287b0ae12c3328b4c6d_large.jpg",
+            "https://product.hstatic.net/1000284478/product/01_107381_7_7422196814434b6195afe2e795058c8f_large.jpg"
+          ]
+        },
+        "quantity": {
+          "type": "number",
+          "example": 123
+        },
+        "productType": {
+          "type": "string",
+          "example": "PUMA"
+        },
+        "price": {
+          "type": "number",
+          "example": 749000
+        },
+        "sizes": {
+          "type": "array",
+          "example": ["40", "41", "42", "43"]
+        }
+      }
+    }
+  }
+}

@@ -128,6 +128,11 @@ export const getDetailsUser = async (req: RequestApp, res: Response) => {
       if (!user) {
         return res.status(404).json({ message: "Không tìm thấy người dùng" });
       }
+      return res.status(200).json({
+        message: "success",
+        status: 200,
+        data: user,
+      });
     }
     const users = await UserModel.find()
       .skip(startIndex)

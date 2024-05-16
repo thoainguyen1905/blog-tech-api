@@ -141,7 +141,20 @@ export const relateProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getNew = async (req: Request, res: Response) => {};
+export const getNew = async (req: RequestApp, res: Response) => {
+  const total = await ProductModel.estimatedDocumentCount();
+  try {
+    const products = await ProductModel.find().skip(1).limit(10);
+    return res.status(200).json({
+      message: "success",
+      status: 200,
+      total,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {

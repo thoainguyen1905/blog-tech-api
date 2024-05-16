@@ -8,7 +8,7 @@ import {
 import auth from "../middleware/auth";
 
 // blogRouter.get("/blog?id=:id", getDetailBlog);
-blogRouter.get("/blog", auth, getListBlog);
+blogRouter.get("/blog", getListBlog);
 blogRouter.post("/blog", addBlog);
 blogRouter.delete("/blog", deleteBlog);
 

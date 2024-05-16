@@ -1,10 +1,11 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+const swaggerDocument = require("../../data/swagger.json");
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Hero API",
+      title: "blog tech api",
       description: "Example of CRUD API ",
       version: "1.0.0",
     },
@@ -20,10 +21,9 @@ const options = {
     ],
     components: {
       securitySchemes: {
-        BearerAuth: {
+        bearerAuth: {
           type: "http",
           scheme: "bearer",
-          bearerFormat: "JWT",
         },
       },
     },
@@ -34,22 +34,7 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 function swaggerDocs(app, port) {
-  app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, {
-      swaggerOptions: {
-        basicAuth: {
-          name: "Authorization",
-          schema: {
-            type: "http",
-            in: "header",
-          },
-          value: "Bearer <user:password>",
-        },
-      },
-    })
-  );
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.get("/docs.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
